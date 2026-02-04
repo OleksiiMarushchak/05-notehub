@@ -14,15 +14,9 @@ export interface Note {
   updatedAt: string;
 }
 
-
 export interface NoteFormValues {
   title: string;
   content: string;
-  tag: string;
+  tag: NoteTag;
 }
-
-
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
-}
+ 

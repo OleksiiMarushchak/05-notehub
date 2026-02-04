@@ -1,43 +1,51 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as Yup from "yup";
 import styles from "./NoteForm.module.css";
-import type{ NoteFormValues} from "../../types/note"
+
+import { createNote } from "../../services/noteService";
+import type { NoteFormValues } from "../../types/note";
 
 interface NoteFormProps {
-  onSubmit: (values: NoteFormValues) => void;
   onCancel: () => void;
 }
 
-const schema = Yup.object({
+const validationSchema = Yup.object({
   title: Yup.string()
-    .min(3)
-    .max(50)
-    .required(),
-  content: Yup.string().max(500),
+    .min(3, "Min 3 characters")
+    .max(50, "Max 50 characters")
+    .required("Title is required"),
+  content: Yup.string().max(500, "Max 500 characters"),
   tag: Yup.string()
-    .oneOf([
-      "Todo",
-      "Work",
-      "Personal",
-      "Meeting",
-      "Shopping",
-    ])
-    .required(),
+    .oneOf(
+      ["Todo", "Work", "Personal", "Meeting", "Shopping"],
+      "Invalid tag"
+    )
+    .required("Tag is required"),
 });
 
-export default function NoteForm({
-  onSubmit,
-  onCancel,
-}: NoteFormProps) {
+export default function NoteForm({ onCancel }: NoteFormProps) {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["notes"],
+      });
+      onCancel();
+    },
+  });
+
   return (
-    <Formik
+    <Formik<NoteFormValues>
       initialValues={{
         title: "",
         content: "",
         tag: "Todo",
       }}
-      validationSchema={schema}
-      onSubmit={(values) => onSubmit(values)}
+      validationSchema={validationSchema}
+      onSubmit={(values) => mutation.mutate(values)}
     >
       {({ isValid }) => (
         <Form className={styles.form}>
@@ -100,6 +108,7 @@ export default function NoteForm({
             >
               Cancel
             </button>
+
             <button
               type="submit"
               className={styles.submitButton}
