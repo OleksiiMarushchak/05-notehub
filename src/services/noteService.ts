@@ -10,12 +10,8 @@ const api = axios.create({
   },
 });
 
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
-}
 
-export async function fetchNotes(
+export async function fetchNotes<FetchNotesResponse>(
   search: string,
   page: number,
   perPage = 12

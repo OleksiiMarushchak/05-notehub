@@ -20,3 +20,9 @@ export interface NoteFormValues {
   content: string;
   tag: string;
 }
+
+
+export interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
