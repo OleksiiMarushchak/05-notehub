@@ -7,10 +7,14 @@ import styles from "./App.module.css";
 import { fetchNotes, createNote, deleteNote } from "../../services/noteService";
 
 import Modal from "../Modal/Modal";
-import NoteForm, { NoteFormValues } from "../NoteForm/NoteForm";
+import NoteForm from "../NoteForm/NoteForm";
 import NoteList from "../NoteList/NoteList";
 import Pagination from "../Pagination/Pagination";
 import SearchBox from "../SearchBox/SearchBox";
+
+import type {
+  NoteFormValues,
+} from "../../types/note";
 
 export default function App() {
     const queryClient = useQueryClient();

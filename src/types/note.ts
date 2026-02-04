@@ -13,3 +13,10 @@ export interface Note {
   createdAt: string;
   updatedAt: string;
 }
+
+
+export interface NoteFormValues {
+  title: string;
+  content: string;
+  tag: string;
+}

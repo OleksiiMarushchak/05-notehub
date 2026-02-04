@@ -1,12 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import styles from "./NoteForm.module.css";
-
-export interface NoteFormValues {
-  title: string;
-  content: string;
-  tag: string;
-}
+import NoteFormValues from "../../types/note"
 
 interface NoteFormProps {
   onSubmit: (values: NoteFormValues) => void;
